@@ -1,5 +1,6 @@
 import re
 import scrapy
+from scrapy.utils.sitemap import Sitemap
 
 class TopicSpider(scrapy.Spider):
     name = "topic_spider"
@@ -18,7 +19,9 @@ class TopicSpider(scrapy.Spider):
         yield scrapy.Request(url, self.parse_sitemap)
 
     def parse_sitemap(self, response):
-        for url in response.css("loc::text"):
+        s = Sitemap(response.body)
+        for entry in s:
+            url = entry['loc']
             if re.fullmatch(r'https://www.oxfordlearnersdictionaries.com/topic/\w+', url):
                 yield scrapy.Request(url, meta={"playwright": True})
 
