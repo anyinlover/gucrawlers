@@ -16,7 +16,7 @@ class Oxford3000Spider(scrapy.Spider):
     
     def start_requests(self):
         url = "https://www.oxfordlearnersdictionaries.com/wordlists/oxford3000-5000"
-        yield scrapy.Request(url, meta={"playwright": True})
+        yield scrapy.Request(url, meta={"playwright": True, "playwright_page_methods": [PageMethod('wait_for_selector', 'ul.top-g')]})
     
     def parse(self, response):
         lists = response.css("ul.top-g")

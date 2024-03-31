@@ -1,4 +1,5 @@
 import scrapy
+from scrapy_playwright.page import PageMethod
 
 class OxfordOPALspider(scrapy.Spider):
     name = "oxford_opal"
@@ -14,7 +15,7 @@ class OxfordOPALspider(scrapy.Spider):
     
     def start_requests(self):
         url = "https://www.oxfordlearnersdictionaries.com/wordlists/opal"
-        yield scrapy.Request(url, meta={"playwright": True})
+        yield scrapy.Request(url, meta={"playwright": True, "playwright_page_methods": [PageMethod('wait_for_selector', 'ul.top-g')]})
     
     def parse(self, response):
         lists = response.css("ul.top-g")
